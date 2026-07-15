@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLOGSPHERE</title>
+    <link rel="stylesheet" href="./Stylesheet/login.css">
+</head>
+<body>
+
+   
+<div class="all">
+
+  <div class="hero">  
+
+    <form onsubmit="return formValidation(event)">
+        <h2>Log<span>in</span></h2>
+        <p class="back">Welcome back! You've been missed!</p>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            <small class="red hide" id="checkUsername">Please enter your name</small>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <small class="red hide" id="checkEmail">Please enter your email</small>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <small class="red hide" id="checkPassword">Please enter your password</small>
+        </div>
+        <button type="submit" class="cr7">Login</button>
+        <p>Don't have an account? <a href="./signup.html">SignUp</a></p>
+    </form>
+
+  </div>  
+
+</div>    
+    <script src="./JS/login.js"></script>
+</body>
+</html>
