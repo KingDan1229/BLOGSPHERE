@@ -46,15 +46,17 @@ body {
     top: 0;
     z-index: 1000;
 }
-
-.brand {
-    font-size: 1.5rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--blue-dark);
-    text-decoration: none;
-
-}
+    .footer .footer-inner{
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 8px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        flex-direction: column;
+        text-align: center;
+    }
 
 .brand span {
     color: var(--blue);
@@ -239,7 +241,8 @@ body {
 }
 
 .page .carousel .carousel-item {
-    min-height: 460px;
+    min-height: 320px;
+    height: 80vh;
 }
 
 .page .carousel .carousel-item img {
@@ -294,6 +297,47 @@ body {
     background-size: 100% 100%;
     filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.35));
 }
+
+
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+
+
+/* --- Category Cards --- */
+.category-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.category-card i {
+    transition: transform 0.3s ease;
+}
+.category-card:hover i {
+    transform: scale(1.1);
+}   
+
+.cat-pills {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 0.75rem;
+}
+
+.cat-pills .btn {
+    margin: 0;
+}
+
 
 
 
@@ -413,110 +457,30 @@ body {
 
 
 .footer{
-    margin-top: 170px;
-    background: linear-gradient(135deg, var(--blue-dark), var(--blue));
-    padding: 50px 0;
-    color: var(--white);
-    border-top-left-radius: 24px;
-    border-top-right-radius: 24px;
+    margin-top: 80px;
+    background: transparent;
+    padding: 20px 0;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
 }
 
-.footer .contents{
-    display: flex;
-    justify-content: space-between;
-    width: 95%;
-    margin: auto;
-    gap: 24px;
-    flex-wrap: wrap;
-}
-
-.footer .contents .about h4,
-.footer .contents .company #company,
-.footer .contents .links h4,
-.footer .contents .social h4{
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: var(--white);
-}
-
-.footer .contents .about span,
-.footer .contents .company span{
-    color: var(--blue-light);
-}
-
-.footer .contents .company .span{
-    color: var(--white);
-    line-height: 1.8em;
-}
-
-.footer .contents .company .span a,
-.footer .contents .links a,
-.footer .contents .social a{
-    text-decoration: none;
-    color: var(--white);
-    font-family: verdana;
-    transition: color 0.2s ease, transform 0.2s ease;
-    display: inline-block;
-}
-
-.footer .contents .links a .us{
-    margin: 20px 0;
-}
-
-.footer .contents .links a:hover,
-.footer .contents .social a:hover,
-.footer .contents .company .span a:hover{
-    color: var(--blue-light);
-    transform: translateX(4px);
-}
-
-.footer .contents .about h4:hover,
-.footer .contents .company #company:hover,
-.footer .contents .links h4:hover,
-.footer .contents .social h4:hover{
-    color: var(--blue-light);
-    transform: translateY(-1px);
-    transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.footer .contents .social i{
-    margin-right: 5px;
-}
-
-.footer .contents .social .what{
-    margin: 15px 0;
-    margin-right: 5px;
-}
-
-
-
-.footer-divider {
-    width: 95%;
-    margin: 24px auto 12px;
-    border: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.footer-bottom {
-    width: 95%;
+.footer .footer-inner{
+    max-width: 1240px;
     margin: 0 auto;
+    padding: 0 24px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    padding-bottom: 6px;
+    justify-content: space-between;
+    gap: 12px;
 }
 
-.footer-copy,
-.footer-credit {
-    color: var(--blue-light);
-    font-size: 0.95rem;
+.footer-copy{
     margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
 }
 
-.footer-credit {
-    text-align: right;
-}
+    .footer-links{display:none}
 
 @media (max-width: 1200px) {
     .page {
@@ -528,7 +492,7 @@ body {
     }
 
     .page .carousel .carousel-item {
-        min-height: 400px;
+        min-height: 360px;
     }
 
     .footer {
@@ -611,7 +575,7 @@ body {
     }
 
     .page .carousel .carousel-item {
-        min-height: 360px;
+        min-height: 240px;
     }
 
     .page .carousel .carousel-caption {
@@ -678,7 +642,7 @@ body {
     }
 
     .page .carousel .carousel-item {
-        min-height: 300px;
+        min-height: 220px;
     }
 
     .page .carousel .carousel-caption {
@@ -797,6 +761,223 @@ body {
 
     .page .post .post-flex .image {
         font-size: 22px;
+    }
+
+    /* Responsive modal adjustments for small screens */
+    .modal-dialog {
+        max-width: 95%;
+        margin: 0 1rem;
+    }
+
+    .modal-content {
+        padding: 0.75rem;
+    }
+
+    .modal-body {
+        font-size: 0.95rem;
+    }
+
+    .modal-body img {
+        max-height: 220px;
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+/* General modal and typography responsiveness */
+.modal-dialog {
+    max-width: 920px;
+}
+
+.modal-content {
+    border-radius: 12px;
+}
+
+.modal-body {
+    font-size: clamp(1rem, 1.2vw, 1.05rem);
+    line-height: 1.6;
+}
+
+.modal-body img {
+    max-height: 360px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+@media (max-width: 980px) {
+    .modal-dialog {
+        max-width: 86%;
+    }
+}
+
+@media (max-width: 760px) {
+    .modal-body {
+        font-size: 0.98rem;
+    }
+    .modal-body img { max-height: 260px; }
+}
+
+@media (max-width: 560px) {
+    .modal-body { font-size: 0.95rem; }
+    .modal-body img { max-height: 200px; }
+}
+
+/* Ensure cards and their images remain responsive */
+.card-img-top {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: cover;
+}
+
+.card .card-body {
+    min-height: 140px;
+}
+
+/* Responsive override block */
+.page {
+    width: min(1240px, 100%);
+}
+
+.footer {
+    width: 100%;
+}
+
+.footer .footer-inner {
+    width: 100%;
+    max-width: 1240px;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-copy {
+    width: 100%;
+}
+
+.card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.card-footer .btn {
+    margin-left: auto;
+}
+
+.modal-dialog {
+    width: 100%;
+    max-width: 920px;
+    margin: 1.2rem auto;
+}
+
+.modal-content {
+    width: 100%;
+    border-radius: 16px;
+}
+
+.modal-header,
+.modal-footer {
+    padding: 1rem 1.2rem;
+}
+
+.modal-body {
+    padding: 1rem 1.2rem;
+    font-size: clamp(0.95rem, 1.1vw, 1rem);
+    line-height: 1.65;
+}
+
+.modal-body img {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+@media (max-width: 980px) {
+    .page {
+        padding: 20px;
+    }
+
+    .topbar {
+        padding: 16px 18px;
+    }
+
+    .card-footer {
+        justify-content: space-between;
+    }
+
+    .modal-dialog {
+        max-width: 88%;
+    }
+}
+
+@media (max-width: 760px) {
+    .page {
+        padding: 16px;
+    }
+
+    .topbar {
+        padding: 14px 16px;
+    }
+
+    .card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .card-footer .btn {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .modal-dialog {
+        max-width: 100%;
+        margin: 0.8rem;
+    }
+
+    .modal-header,
+    .modal-footer,
+    .modal-body {
+        padding: 0.85rem 1rem;
+    }
+
+    .modal-body img {
+        max-height: 280px;
+    }
+}
+
+@media (max-width: 560px) {
+    .page {
+        padding: 12px;
+    }
+
+    .topbar {
+        padding: 12px 14px;
+    }
+
+    .footer .footer-inner {
+        padding: 14px 16px;
+    }
+
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .modal-body {
+        font-size: 0.95rem;
+    }
+
+    .modal-body img {
+        max-height: 220px;
     }
 }
 
