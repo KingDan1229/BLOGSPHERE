@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>Published posts</h1>
+{% if not posts %}
+<p>No published posts yet.</p>
+{% endif %}
+{% for post in posts %}
+  <article>
+    <h2><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a></h2>
+    {% if post.category %}<p class="meta">{{ post.category }}</p>{% endif %}
+    {% if post.tags %}<p class="meta">{{ post.tags | join(", ") }}</p>{% endif %}
+  </article>
+{% endfor %}
+{% endblock %}
