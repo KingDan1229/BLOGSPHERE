@@ -1,0 +1,538 @@
+
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #f8fbff, #eef4ff);
+    color: #1f2937;
+    overflow-x: hidden;
+}
+
+.page {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* ================================================================
+   NAVBAR
+   ================================================================ */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: transparent;
+    padding: 18px 24px;
+    border-radius: 18px;
+    margin-bottom: 24px;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: #0a1326;
+}
+.brand span {
+    color: #2563eb;
+}
+
+.topnav {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+}
+
+.topnav a {
+    text-decoration: none;
+    color: #0a1326;
+    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+
+.topnav a.active,
+.topnav a:hover {
+    color: #2563eb;
+    background: #f0f4ff;
+}
+
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid #d6dce8;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.menu-toggle span,
+.menu-toggle span::before,
+.menu-toggle span::after {
+    display: block;
+    content: "";
+    width: 18px;
+    height: 2px;
+    background: #0f172a;
+    border-radius: 999px;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-toggle span::before {
+    transform: translateY(-6px);
+}
+.menu-toggle span::after {
+    transform: translateY(6px);
+}
+
+.menu-toggle.open span {
+    background: transparent;
+}
+.menu-toggle.open span::before {
+    transform: rotate(45deg);
+}
+.menu-toggle.open span::after {
+    transform: rotate(-45deg);
+}
+
+/* Profile Avatar in Navbar */
+.profile-wrap {
+    position: relative;
+    margin-left: 4px;
+    padding-left: 8px;
+    border-left: 1px solid #d6dce8;
+    display: none;
+}
+.profile-wrap.show {
+    display: flex;
+    align-items: center;
+}
+
+.profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #16a34a;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    width: 220px;
+    background: #fff;
+    border: 1px solid #d6dce8;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.14);
+    padding: 14px;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+}
+.profile-dropdown.open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+.profile-dropdown .pd-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+.profile-dropdown .pd-meta {
+    font-size: 11.5px;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+.profile-dropdown button {
+    width: 100%;
+    background: #f8fafc;
+    border: 1px solid #d6dce8;
+    color: #0f172a;
+    font-size: 13px;
+    padding: 9px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s;
+}
+.profile-dropdown button:hover {
+    background: #ecfdf5;
+}
+
+/* ================================================================
+   PROFILE HEADER
+   ================================================================ */
+.profile-header {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-header-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+/* --- Large Avatar (Initials) --- */
+.profile-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.profile-avatar-large span {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+/* --- User Info --- */
+.profile-user-info {
+    flex: 1;
+}
+
+.profile-user-info h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.profile-user-info p {
+    opacity: 0.8;
+    margin-bottom: 8px;
+}
+
+.profile-stats {
+    display: flex;
+    gap: 24px;
+}
+
+.profile-stats span {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 4px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* --- Actions --- */
+.profile-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.profile-actions .btn {
+    padding: 0.6rem 1.4rem;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.profile-actions .btn-primary {
+    background: white;
+    color: #2563eb;
+    border: none;
+}
+.profile-actions .btn-primary:hover {
+    background: #f0f4ff;
+}
+
+.profile-actions .btn-outline-danger {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+.profile-actions .btn-outline-danger:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ================================================================
+   USER POSTS SECTION
+   ================================================================ */
+.profile-posts-section {
+    padding: 1rem 0 3rem;
+}
+
+/* --- Post Cards --- */
+.post-card {
+    border-left: 4px solid #2563eb;
+    background: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.post-card .card-body {
+    padding: 1.5rem;
+}
+
+.tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+}
+
+/* --- Edit/Delete Buttons --- */
+.edit-btn,
+.delete-btn {
+    transition: transform 0.2s;
+}
+.edit-btn:hover,
+.delete-btn:hover {
+    transform: scale(1.05);
+}
+
+
+/* ================================================================
+   EXPANDABLE READ MORE STYLES (for profile)
+   ================================================================ */
+
+.post-full-content {
+    transition: all 0.3s ease;
+}
+
+.post-preview {
+    margin-bottom: 0;
+}
+
+.read-more-btn {
+    font-size: 0.85rem;
+    padding: 4px 14px;
+    transition: 0.3s;
+}
+
+.read-more-btn:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.read-more-btn i {
+    transition: 0.3s;
+}
+
+.read-more-btn:not(.collapsed) i {
+    transform: rotate(180deg);
+}
+
+.collapse {
+    transition: height 0.35s ease;
+}
+
+
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+.footer {
+    margin-top: 80px;
+    background: transparent;
+    padding: 20px 0;
+    color: #64748b;
+    border-top: 1px solid #d6dce8;
+}
+
+.footer .footer-inner {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 8px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-direction: column;
+    text-align: center;
+}
+
+.footer-copy {
+    margin: 0;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* ================================================================
+   RESPONSIVE
+   ================================================================ */
+@media (max-width: 980px) {
+    .topbar {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .menu-toggle {
+        display: inline-flex;
+        order: 2;
+        margin-left: auto;
+    }
+    .topnav {
+        order: 4;
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        margin-top: 8px;
+        padding: 14px;
+        background: #fff;
+        border: 1px solid #d6dce8;
+        border-radius: 16px;
+    }
+    .topnav.open {
+        display: flex;
+    }
+    .topnav a {
+        width: 100%;
+        padding: 12px 14px;
+    }
+    .profile-wrap {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 16px;
+    }
+
+    .profile-header {
+        padding: 2rem 1.5rem;
+    }
+
+    .profile-header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .profile-avatar-large {
+        width: 100px;
+        height: 100px;
+    }
+    .profile-avatar-large span {
+        font-size: 2.8rem;
+    }
+
+    .profile-user-info {
+        text-align: center;
+    }
+    .profile-user-info h2 {
+        font-size: 1.6rem;
+    }
+
+    .profile-stats {
+        justify-content: center;
+    }
+
+    .profile-actions {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .profile-actions .btn {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 560px) {
+    .page {
+        padding: 12px;
+    }
+
+    .topbar {
+        padding: 12px;
+    }
+    .brand {
+        font-size: 1.15rem;
+    }
+    .topnav a {
+        padding: 10px;
+        font-size: 0.95rem;
+    }
+
+    .profile-header {
+        padding: 1.5rem 1rem;
+        border-radius: 16px;
+    }
+
+    .profile-avatar-large {
+        width: 80px;
+        height: 80px;
+    }
+    .profile-avatar-large span {
+        font-size: 2.2rem;
+    }
+
+    .profile-user-info h2 {
+        font-size: 1.3rem;
+    }
+
+    .profile-stats {
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .profile-stats span {
+        font-size: 0.8rem;
+        padding: 3px 12px;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .profile-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .footer {
+        margin-top: 70px;
+        padding: 28px 0;
+    }
+}
