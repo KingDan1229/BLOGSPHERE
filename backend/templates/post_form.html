@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{% if post %}Edit{% else %}New{% endif %} post{% endblock %}
+{% block content %}
+<h1>{% if post %}Edit post{% else %}Create post{% endif %}</h1>
+<form method="post" enctype="multipart/form-data">
+  <label>Title
+    <input type="text" name="title" value="{{ post.title if post else '' }}" required>
+  </label>
+  <label>Category
+    <input type="text" name="category" value="{{ post.category if post else '' }}">
+  </label>
+  <label>Tags (comma separated)
+    <input type="text" name="tags" value="{{ post.tags | join(', ') if post and post.tags else '' }}">
+  </label>
+  <label>Body
+    <textarea name="body" rows="10" required>{{ post.body if post else '' }}</textarea>
+  </label>
+  <label>Image
+    <input type="file" name="image" accept="image/*">
+  </label>
+  {% if post and post.image_url %}
+  <p>Current image: <a href="{{ post.image_url }}" target="_blank">view</a></p>
+  {% endif %}
+  <label class="check">
+    <input type="checkbox" name="published" {% if post and post.published %}checked{% endif %}>
+    Publish
+  </label>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
