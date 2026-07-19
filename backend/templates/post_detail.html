@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<article class="detail">
+  <h1>{{ post.title }}</h1>
+  <p class="meta">
+    {% if post.category %}{{ post.category }}{% endif %}
+    {% if post.tags %} | {{ post.tags | join(", ") }}{% endif %}
+    | {% if post.published %}published{% else %}draft{% endif %}
+  </p>
+  {% if post.image_url %}
+  <img src="{{ post.image_url }}" alt="{{ post.title }}">
+  {% endif %}
+  <div class="body">{{ post.body }}</div>
+  <p>
+    <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
+  </p>
+  <form method="post" action="{{ url_for('remove_post', post_id=post.id) }}" onsubmit="return confirm('Delete this post?');">
+    <button type="submit">Delete</button>
+  </form>
+</article>
+
+<section>
+  <h2>Comments</h2>
+  {% for c in comments %}
+    <div class="comment">
+      <strong>{{ c.author }}</strong>
+      <p>{{ c.body }}</p>
+    </div>
+  {% else %}
+    <p>No comments yet.</p>
+  {% endfor %}
+  <form method="post" action="{{ url_for('comment', post_id=post.id) }}">
+    <label>Name
+      <input type="text" name="author" placeholder="Anonymous">
+    </label>
+    <label>Comment
+      <textarea name="body" rows="3" required></textarea>
+    </label>
+    <button type="submit">Post comment</button>
+  </form>
+</section>
+{% endblock %}

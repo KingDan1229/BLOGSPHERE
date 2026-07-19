@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}All posts{% endblock %}
+{% block content %}
+<h1>All posts</h1>
+{% if not posts %}
+<p>Nothing here yet.</p>
+{% endif %}
+{% for post in posts %}
+  <article>
+    <h2><a href="{{ url_for('view_post', post_id=post.id) }}">{{ post.title }}</a></h2>
+    <p class="meta">
+      {% if post.published %}published{% else %}draft{% endif %}
+      {% if post.category %} | {{ post.category }}{% endif %}
+    </p>
+    <a href="{{ url_for('edit_post', post_id=post.id) }}">Edit</a>
+  </article>
+{% endfor %}
+{% endblock %}
