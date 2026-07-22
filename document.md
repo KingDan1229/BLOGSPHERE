@@ -1,67 +1,79 @@
 # How this blogging platform works
 
-This is my backend for the blogging case study. I used Flask so the same Python app can handle the pages and talk to Supabase. There is no login yet, I only connected storage and the database.
+This is my backend for the blogging case study. Flask serves Jinja pages and a JSON API for the frontend. Supabase stores posts, comments, likes, and images.
 
 ## Overall idea
 
-When someone opens the site, Flask gets the request, grabs data from Supabase if needed, then fills a Jinja template and sends HTML back. The browser is just showing pages. The real work is in Python plus Supabase.
+The frontend calls `/api/...` endpoints. Flask reads or writes data in Supabase, then returns JSON like `{ "success": true, posts: [...] }`. CORS is enabled so a separate frontend can call the API.
 
-Supabase is where stuff actually lives. Posts and comments are rows in tables. Images go into a storage bucket called blog-images. My Python code uses the Supabase client to insert, update, delete, and upload. Keys and the project URL sit in a .env file so they are not hard coded in the source.
+Jinja pages still work for quick browser testing, but the main contract for the team frontend is the API.
 
-## Main files
+## Field mapping
 
-app.py is the routes. Like home, create post, edit, delete, and posting a comment. It reads form data, maybe uploads an image, then calls functions in db.py.
+Supabase uses snake_case columns. The API returns camelCase for the frontend:
 
-db.py is the Supabase side. That is where list_posts, create_post, upload_file, and the comment helpers are. app.py stays mostly about pages and forms.
+- `content` (was body)
+- `createdAt` / `updatedAt`
+- `userId` / `userName`
+- `imageUrl`
+- `likeCount` / `liked`
 
-config.py just loads the env values. templates/ is the HTML Jinja builds, and static/style.css is the styling. I kept HTML and CSS in this project because Flask is serving the UI itself, not a separate frontend.
+## API
 
-## How a post gets created
+| Method | Path | Purpose |
+|--------|------|---------|
+| GET | /api/posts | all posts |
+| POST | /api/posts | create post |
+| PUT | /api/posts/:id | update post |
+| DELETE | /api/posts/:id | delete post |
+| POST | /api/posts/:id/like | toggle like |
+| GET | /api/posts/:id/comments | list comments |
+| POST | /api/posts/:id/comments | add comment |
+| GET | /api/users/:id/posts | posts by user |
 
-1. User fills the form on the new post page.
-2. Flask receives the POST.
-3. If they attached an image, db.py uploads the bytes to Supabase Storage and gets a public URL back.
-4. Then it inserts a row into the posts table with title, body, category, tags, image url, and whether it is published.
-5. User gets sent to the post detail page.
+Send `userId` / `userName` in the JSON body, query string, or headers `X-User-Id` / `X-User-Name`.
 
-Editing is basically the same except it updates the existing row. Home only shows posts where published is true. All posts shows drafts too.
+## SQL for Supabase
 
-## Comments
+If you already created the old tables, run the migration section. For a fresh project, use the create section.
 
-Comments are a separate table linked by post_id. On the post page the form posts to a comment route, that inserts into comments, then reloads the page so the new comment shows up.
-
-## Categories and tags
-
-Category is just a text field on the post. Tags are stored as a list (text array in Supabase). On the form the user types them comma separated and Python splits that into a list before saving.
-
-## What I did not do yet
-
-Auth is skipped for now. Policies on the tables are open so the app can read and write without a logged in user. That is fine for the demo but it means anyone with the site open can change posts. Storage is public so the image links work in the browser.
-
-## SQL I used in Supabase
+### Fresh create
 
 ```sql
 create table posts (
   id uuid primary key default gen_random_uuid(),
   title text not null,
-  body text not null,
+  content text not null,
   category text default '',
   tags text[] default '{}',
   image_url text,
   published boolean default false,
-  created_at timestamptz default now()
+  user_id text,
+  user_name text,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
 create table comments (
   id uuid primary key default gen_random_uuid(),
   post_id uuid references posts(id) on delete cascade,
   author text default 'Anonymous',
-  body text not null,
+  content text not null,
+  user_id text,
   created_at timestamptz default now()
+);
+
+create table likes (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid references posts(id) on delete cascade,
+  user_id text not null,
+  created_at timestamptz default now(),
+  unique (post_id, user_id)
 );
 
 alter table posts enable row level security;
 alter table comments enable row level security;
+alter table likes enable row level security;
 
 create policy "public read posts" on posts for select using (true);
 create policy "public insert posts" on posts for insert with check (true);
@@ -70,4 +82,35 @@ create policy "public delete posts" on posts for delete using (true);
 
 create policy "public read comments" on comments for select using (true);
 create policy "public insert comments" on comments for insert with check (true);
+
+create policy "public read likes" on likes for select using (true);
+create policy "public insert likes" on likes for insert with check (true);
+create policy "public delete likes" on likes for delete using (true);
 ```
+
+### Migration from old schema
+
+```sql
+alter table posts rename column body to content;
+alter table posts add column if not exists user_id text;
+alter table posts add column if not exists user_name text;
+alter table posts add column if not exists updated_at timestamptz default now();
+
+alter table comments rename column body to content;
+alter table comments add column if not exists user_id text;
+
+create table if not exists likes (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid references posts(id) on delete cascade,
+  user_id text not null,
+  created_at timestamptz default now(),
+  unique (post_id, user_id)
+);
+
+alter table likes enable row level security;
+create policy "public read likes" on likes for select using (true);
+create policy "public insert likes" on likes for insert with check (true);
+create policy "public delete likes" on likes for delete using (true);
+```
+
+Also create a public Storage bucket named `blog-images`.

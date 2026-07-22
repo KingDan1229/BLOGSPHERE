@@ -12,14 +12,14 @@
   <label>Tags (comma separated)
     <input type="text" name="tags" value="{{ post.tags | join(', ') if post and post.tags else '' }}">
   </label>
-  <label>Body
-    <textarea name="body" rows="10" required>{{ post.body if post else '' }}</textarea>
+  <label>Content
+    <textarea name="content" rows="10" required>{{ post.content if post else '' }}</textarea>
   </label>
   <label>Image
     <input type="file" name="image" accept="image/*">
   </label>
-  {% if post and post.image_url %}
-  <p>Current image: <a href="{{ post.image_url }}" target="_blank">view</a></p>
+  {% if post and post.imageUrl %}
+  <p>Current image: <a href="{{ post.imageUrl }}" target="_blank">view</a></p>
   {% endif %}
   <label class="check">
     <input type="checkbox" name="published" {% if post and post.published %}checked{% endif %}>
